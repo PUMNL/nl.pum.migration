@@ -50,8 +50,7 @@ class CRM_Utils_PumUtils {
         }
         try {
             $apiResult = civicrm_api3('CustomField', 'Getsingle', $params);
-        }
-        catch (CiviCRM_API3_Exception $e) {
+        } catch (CiviCRM_API3_Exception $e) {
             $result['is_error'] = 1;
             $result['error_message'] = "Error with OptionGroup Getsingle API : ".$e->getMessage();
             return $result;

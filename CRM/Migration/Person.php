@@ -23,8 +23,7 @@ class CRM_Migration_Person {
             } else {
                 $this->maritalStatusOptionGroup = 0;
             }
-        }
-        catch (CiviCRM_API3_Exception $e) {
+        } catch (CiviCRM_API3_Exception $e) {
             $this->maritalStatusOptionGroup = 0;
         }
         
@@ -35,8 +34,7 @@ class CRM_Migration_Person {
             } else {
                 $this->nationalityOptionGroup = 0;
             }
-        }
-        catch (CiviCRM_API3_Exception $e) {
+        } catch (CiviCRM_API3_Exception $e) {
             $this->nationalityOptionGroup = 0;
         }
         /*
@@ -177,7 +175,7 @@ class CRM_Migration_Person {
 
         if (isset($daoSource->nationality)) {
             if (!empty($daoSource->nationality)) {
-                $nationalityValue = $this->getOptionValue("nationality", $daoSource->nationality);
+                $nationalityValue = $this->getOptionValue("Nationality", $daoSource->nationality);
                 if (!empty($nationalityValue)) {
                     $customFieldArray = CRM_Utils_PumUtils::retrieveCustomFieldId(array('label' => "Nationality"));
                     if (!civicrm_error($customFieldArray)) {
@@ -211,7 +209,7 @@ class CRM_Migration_Person {
 
         if (isset($daoSource->maritalstatus)) {
             if (!empty($daoSource->maritalstatus)) {
-                $maritalStatusValue = $this->getOptionValue("marital status", $daoSource->maritalstatus);
+                $maritalStatusValue = $this->getOptionValue("Marital Status", $daoSource->maritalstatus);
                 if (!empty($maritalStatusValue)) {
                     $customFieldArray = CRM_Utils_PumUtils::retrieveCustomFieldId(array('label' => "Marital Status"));
                     if (!civicrm_error($customFieldArray)) {
@@ -225,6 +223,8 @@ class CRM_Migration_Person {
                 }
             }
         }
+        $apiParams['source'] = "Migration ".date("Y-m-d");
+        
     return $apiParams;
     }
     /**
@@ -257,13 +257,12 @@ class CRM_Migration_Person {
                     $optionValueExists = FALSE;
                     try {
                         $countOptionValues = civicrm_api3('OptionValue', 'Getcount', array('label' => $daoDistinct->maritalstatus));
-                        if (isset($countOptionValues['result']) && $countOptionValues > 0) {
+                        if ($countOptionValues > 0) {
                             $optionValueExists = TRUE;
                         }
+                    } catch (CiviCRM_API3_Exception $e) {
                     }
-                    catch (CiviCRM_API3_Exception $e) {
-                    }
-                    if (!$optionValueExists) {
+                    if ($optionValueExists == FALSE) {
                         $optionParams = array(
                             'option_group_id'   =>  $this->maritalStatusOptionGroup,
                             'name'              =>  $daoDistinct->maritalstatus,
@@ -274,8 +273,7 @@ class CRM_Migration_Person {
                         try {
                             civicrm_api3('OptionValue', 'Create', $optionParams);
                             $latestValue++;
-                        }
-                        catch (CiviCRM_API3_Exception $e) {
+                        } catch (CiviCRM_API3_Exception $e) {
                         }
                     }
                 }
@@ -312,13 +310,12 @@ class CRM_Migration_Person {
                     $optionValueExists = FALSE;
                     try {
                         $countOptionValues = civicrm_api3('OptionValue', 'Getcount', array('label' => $daoDistinct->nationality));
-                        if (isset($countOptionValues['result']) && $countOptionValues > 0) {
+                        if ($countOptionValues > 0) {
                             $optionValueExists = TRUE;
                         }
+                    } catch (CiviCRM_API3_Exception $e) {
                     }
-                    catch (CiviCRM_API3_Exception $e) {
-                    }
-                    if (!$optionValueExists) {
+                    if ($optionValueExists == FALSE) {
                         $optionParams = array(
                             'option_group_id'   =>  $this->nationalityOptionGroup,
                             'name'              =>  $daoDistinct->nationality,
@@ -329,8 +326,7 @@ class CRM_Migration_Person {
                         try {
                             civicrm_api3('OptionValue', 'Create', $optionParams);
                             $latestValue++;
-                        }
-                        catch (CiviCRM_API3_Exception $e) {
+                        } catch (CiviCRM_API3_Exception $e) {
                         }
                     }
                 }
@@ -354,10 +350,10 @@ class CRM_Migration_Person {
          * retrieve option group id
          */
         switch($optionType) {
-            case "marital status":
+            case "Marital Status":
                 $optionGroupTitle = "Marital Status";
                 break;
-            case "nationality":
+            case "Nationality":
                 $optionGroupTitle = "Nationality";
                 break;
         }
@@ -376,13 +372,11 @@ class CRM_Migration_Person {
                     if (isset($apiOptionValue['value'])) {
                         $returnValue = $apiOptionValue['value'];
                     }
-                }
-                catch (CiviCRM_API3_Exception $e) {
+                } catch (CiviCRM_API3_Exception $e) {
                     $returnValue = 0;
                 }
             }   
-        }
-        catch (CiviCRM_API3_Exception $e) {
+        } catch (CiviCRM_API3_Exception $e) {
             $returnValue = 0;
         }
         return $returnValue;
@@ -422,8 +416,7 @@ class CRM_Migration_Person {
             } else {
                 $countryId = 0;
             }
-        }
-        catch (CiviCRM_API3_Exception $e) {
+        } catch (CiviCRM_API3_Exception $e) {
             $countryId = 0;
         }
         return $countryId;
