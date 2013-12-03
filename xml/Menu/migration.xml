@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/loadpersons</path>
+    <page_callback>CRM_Migration_Page_Loadpersons</page_callback>
+    <title>Loadpersons</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/processpersons</path>
+    <page_callback>CRM_Migration_Page_Processpersons</page_callback>
+    <title>Processpersons</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
+</menu>
